@@ -7,7 +7,7 @@ namespace Event_Management.Interfaces
         public Task<Event> GetEvent(int eventId);
         public Task<List<Event>> GetAllActiveEvents();
         public Task<bool> AddEvent(Event e);
-        public Task<bool> UpdateEventDetails(Event e,int id);
+        public Task<int> UpdateEventDetails(Event e,int id);
         public Task<bool> CancelEvent(int eventId);
         public Task<bool> RemoveEvent(int eventId);
        

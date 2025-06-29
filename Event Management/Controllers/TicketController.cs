@@ -31,8 +31,12 @@ namespace Event_Management.Controllers
         public async Task<IActionResult> GetTicket(int id)
         {
             Ticket ticket = await _ticket.GetTicket(id);
-            ReadTicketDTO ticketDto = _map.Map<ReadTicketDTO>(ticket);
-            return Ok(ticketDto);
+            if (ticket != null)
+            {
+                ReadTicketDTO ticketDto = _map.Map<ReadTicketDTO>(ticket);
+                return Ok(ticketDto);
+            }
+            return NotFound("There is no Ticket with this ID");
         }
 
 
@@ -60,7 +64,7 @@ namespace Event_Management.Controllers
             Ticket newTicket = _map.Map<Ticket>(newTicketDto);
             bool result = await _ticket.UpdateTicket(newTicket, id);
             if (result) return Ok(newTicketDto);
-            else return BadRequest("There is no Ticket with this ID");
+            else return NotFound("There is no Ticket with this ID");
 
         }
     }

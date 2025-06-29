@@ -54,12 +54,12 @@ namespace Event_Management.Controllers
         {
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
             Event updatedEvent = _map.Map<Event>(updatedEventDTO);
-            bool result= await _event.UpdateEventDetails(updatedEvent, id);
-            if (!result)
+            int result= await _event.UpdateEventDetails(updatedEvent, id);
+            if (result==2)
             {
                 return BadRequest("Invalid Location ID");
             }
-            if (result)  return Ok(updatedEventDTO);
+            if (result==3)  return Ok(updatedEventDTO);
             else return NotFound("There is no Event with this Id");
         }
 

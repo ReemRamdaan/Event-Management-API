@@ -30,6 +30,9 @@ namespace Event_Management.Controllers
         public async Task<IActionResult> GetCategory(int id)
         {
             Category category = await _category.GetCategory(id);
+            if (category == null) {
+                return NotFound("There is no Category with this ID");
+            }
             ReadCategoryDTO categoryDto = _map.Map<ReadCategoryDTO>(category);
             return Ok(categoryDto);
         }
@@ -58,7 +61,7 @@ namespace Event_Management.Controllers
             Category newCategory = _map.Map<Category>(newCategoryDto);
             bool result = await _category.UpdateCategory(newCategory, id);
             if (result) return Ok(newCategoryDto);
-            else return BadRequest("There is no Category with this ID");
+            else return NotFound("There is no Category with this ID");
 
         }
     }

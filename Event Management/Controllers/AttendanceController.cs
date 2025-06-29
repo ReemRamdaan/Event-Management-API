@@ -30,13 +30,20 @@ namespace Event_Management.Controllers
         public async Task<IActionResult> GetAttendance(int id)
         {
             Attendance attendance = await _attendance.GetAttendance(id);
-            ReadAttendanceDTO attendanceDto = _map.Map<ReadAttendanceDTO>(attendance);
-            return Ok(attendanceDto);
+            if (attendance != null) {
+                ReadAttendanceDTO attendanceDto = _map.Map<ReadAttendanceDTO>(attendance);
+                return Ok(attendanceDto);
+            }
+            return NotFound("There is no Attendance with this ID");
         }
         [HttpGet("{id}/tickets")]
         public async Task<IActionResult> GetAttendanceTickets(int id)
         {
             Attendance attendance = await _attendance.GetAttendanceTickets(id);
+            if (attendance == null)
+            {
+                return NotFound("There is no Attendance with this ID");
+            }
             ReadAttendanceWithTicketDTO attendanceDto = _map.Map<ReadAttendanceWithTicketDTO>(attendance);
             return Ok(attendanceDto);
         }
@@ -62,7 +69,7 @@ namespace Event_Management.Controllers
             Attendance newAttendance = _map.Map<Attendance>(updateAttendanceDto);
             bool result=await _attendance.UpdateAttendance(newAttendance,id);
             if (result) return Ok(updateAttendanceDto);
-            else return BadRequest("There is no Attendance with this ID");
+            else return NotFound("There is no Attendance with this ID");
            
         }
 

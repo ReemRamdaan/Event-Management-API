@@ -29,16 +29,16 @@ namespace Event_Management.Repositories
             await _context.SaveChangesAsync();   
             return true;
         }
-        public async Task<bool> UpdateEventDetails(Event updatedEvent,int id)
+        public async Task<int> UpdateEventDetails(Event updatedEvent,int id)
         {
             var existingEvent =await GetEvent(id);
             if (existingEvent == null)
             {
-                return false;
+                return 1;
             }
             var locationExists = await _context.Locations.AnyAsync(l => l.Id == updatedEvent.LocationId);
             if (!locationExists)
-            return false;
+            return 2;
             existingEvent.Name   = updatedEvent.Name;
             existingEvent.Status =updatedEvent.Status;
             existingEvent.Date   = updatedEvent.Date;
@@ -46,7 +46,7 @@ namespace Event_Management.Repositories
             existingEvent.LocationId= updatedEvent.LocationId;
            
            await _context.SaveChangesAsync();
-            return true;
+            return 3;
         }
         public async Task<bool> CancelEvent(int eventId)
         {

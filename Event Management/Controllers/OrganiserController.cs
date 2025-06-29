@@ -33,7 +33,11 @@ namespace Event_Management.Controllers
             public async Task<IActionResult> GetOrganiser(int id)
             {
                 Organiser organiser = await _organiser.GetOrganiser(id);
-                ReadOrganiserDTO organiserDto = _map.Map<ReadOrganiserDTO>(organiser);
+            if (organiser == null)
+            {
+                return NotFound("There is no Organiser with this ID");
+            }
+            ReadOrganiserDTO organiserDto = _map.Map<ReadOrganiserDTO>(organiser);
                 return Ok(organiserDto);
             }
 
@@ -61,7 +65,7 @@ namespace Event_Management.Controllers
                 Organiser newOrganiser = _map.Map<Organiser>(newOrganiserDto);
                 bool result = await _organiser.UpdateOrganiser(newOrganiser, id);
                 if (result) return Ok(newOrganiserDto);
-                else return BadRequest("There is no Organiser with this ID");
+                else return NotFound("There is no Organiser with this ID");
 
             }
 
